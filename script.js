@@ -129,9 +129,7 @@ let textchange = setInterval(function () {
     const btn2 = document.createElement("button");
     btn2.innerText = "Yes";
     btn2.style.position = "fixed"; // can move anywhere inside container
-    btn2.style.left = "680px"; // start middle
-    btn2.style.top = "305px";
-
+   
     btn2.addEventListener("mouseover", () => {
       let randomX = Math.random() * (btnContainer.clientWidth - btn2.offsetWidth);
       let randomY = Math.random() * (btnContainer.clientHeight - btn2.offsetHeight);
@@ -159,3 +157,4 @@ function firstclick(){
   document.body.style.background="linear-gradient(0deg,black,skyblue)"
   
 }
+
