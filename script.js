@@ -150,7 +150,7 @@ let textchange = setInterval(function () {
   else {
     clearInterval(textchange);
   }
-}, 300);
+}, 3000);
 
 
 
@@ -158,3 +158,4 @@ function firstclick(){
   document.body.style.background="linear-gradient(0deg,black,skyblue)"
   
 }
+
