@@ -2,8 +2,8 @@ const heartsContainer = document.getElementById('hearts');
 const line = document.querySelector("#line");
 let textdiv = document.querySelector(".textdiv");
 
-const firsttext = "Happy birthday cgt hgtt bbnjgy gt ";
-const secondtext = "Lots of wishes nhftuu nbhdtr ngtyuhj kuhji";
+const firsttext = "Happy birthday Rima";
+const secondtext = "Lots of love and wishes from Debmalya";
 const thirdtext = "Do you want to see what I made?";
 
 function createHeart() {
@@ -158,3 +158,4 @@ function firstclick(){
   document.body.style.background="linear-gradient(0deg,black,skyblue)"
   
 }
+
