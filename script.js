@@ -3,7 +3,7 @@ const heartsContainer = document.getElementById("hearts");
 const line = document.querySelector("#line");
 const textdiv = document.querySelector(".textdiv");
 
-const firsttext = "Happy birthday Rima ";
+const firsttext = "Happy birthday Babai";
 const secondtext = "Lots of loves and wishes from Vondu";
 const thirdtext = "Do you want to see what I made?";
 
@@ -394,7 +394,8 @@ function showCake() {
 // ====================== MESSAGE NOTE ======================
 function showMessageNote() {
   const note = document.createElement("div");
-  note.innerText = "Thank you for being a part in my life ❤️ (click me)";
+  note.innerText = "Happy Birthday Tabli ❤
+  You are the most special person in my life. I feel so lucky to have you. Your smile lights up my world. On this special day, I wish you endless happiness, good health, and that you always stay by my side. I promise to love you, respect you, and take care of you every day. You are my Queen and the greatest gift of my life. Happy Birthday, my love.(click me)";
   note.style.position = "fixed";
   note.style.top = "50%";
   note.style.left = "50%";
@@ -497,3 +498,4 @@ function getRandomBrightColor() {
 // ====================== INIT ======================
 startHearts();
 startTextChange();
+
