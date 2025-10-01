@@ -168,43 +168,105 @@ function activateDarkMode() {
   const actionBtn = document.createElement("button");
   actionBtn.style.background = "black";
   actionBtn.style.height = "50px";
-  actionBtn.style.width = "250px";
+  
+  // *** RESPONSIVE WIDTH SETUP ***
+  actionBtn.style.padding = "0 20px"; 
+  
   actionBtn.style.position = "fixed";
   actionBtn.style.top = "10%";
-  actionBtn.style.left = "50%";
-  actionBtn.style.transform = "translate(-50%, -50%)";
+  
+  // *** CENTER BUTTON HORIZONTALLY ***
+  actionBtn.style.left = "50%"; 
+  actionBtn.style.transform = "translateX(-50%)"; 
+  
   actionBtn.style.borderRadius = "10px";
   actionBtn.innerText = "Light on";
-  actionBtn.style.border = "0.5px solid blue";
-  actionBtn.style.fontSize = "20px";
+  
+  // --- ENHANCED STYLING ---
+  actionBtn.style.border = "3px solid cyan"; 
+  actionBtn.style.fontSize = "22px"; 
   actionBtn.style.color = "white";
   actionBtn.style.fontWeight = "800";
+  actionBtn.style.cursor = "pointer";
+  actionBtn.style.textShadow = "0 0 8px #00FFFF, 0 0 15px #00FFFF"; 
+  
+  // --- PULSE AND WIGGLE ANIMATIONS ---
+  actionBtn.style.animation = "pulse 1.5s ease-in-out infinite, wiggle 0.5s 3"; 
+
+  const style = document.createElement("style");
+  style.innerHTML = `
+    @keyframes pulse {
+      0% { box-shadow: 0 0 10px rgba(0, 255, 255, 0.7), 0 0 0 0 rgba(0, 255, 255, 0.4); transform: translateX(-50%) scale(1); }
+      50% { box-shadow: 0 0 30px rgba(0, 255, 255, 1), 0 0 0 15px rgba(0, 255, 255, 0); transform: translateX(-50%) scale(1.05); }
+      100% { box-shadow: 0 0 10px rgba(0, 255, 255, 0.7), 0 0 0 0 rgba(0, 255, 255, 0.4); transform: translateX(-50%) scale(1); }
+    }
+    
+    @keyframes float-bounce {
+      from { transform: translate(-50%, -50%) translateY(0); }
+      to { transform: translate(-50%, -50%) translateY(-10px); }
+    }
+
+    /* Updated wiggle to use translateX for horizontal centering */
+    @keyframes wiggle {
+      0%, 100% { transform: translateX(-50%) rotate(0deg); }
+      25% { transform: translateX(-53%) rotate(-3deg); }
+      75% { transform: translateX(-47%) rotate(3deg); }
+    }
+  `;
+  document.head.appendChild(style);
+
+  // --- INTERACTIVE HOVER GLOW EFFECT ---
+  actionBtn.addEventListener("mouseenter", () => {
+    actionBtn.style.transition = "background-color 0.2s, box-shadow 0.2s, color 0.2s";
+    actionBtn.style.background = "linear-gradient(135deg, #00FFFF, #00BFFF)"; 
+    actionBtn.style.boxShadow = "0 0 50px #00FFFF, 0 0 10px #00BFFF";
+    actionBtn.style.color = "black"; 
+    actionBtn.style.textShadow = "none";
+  });
+
+  actionBtn.addEventListener("mouseleave", () => {
+    actionBtn.style.background = "black";
+    actionBtn.style.boxShadow = "0 0 10px rgba(0, 255, 255, 0.7)"; 
+    actionBtn.style.color = "white";
+    actionBtn.style.textShadow = "0 0 8px #00FFFF, 0 0 15px #00FFFF";
+  });
+
+  // Add tooltip
+  actionBtn.title = "Click me to turn on the light!";
 
   firecrackerInterval = setInterval(skyFirecracker, 50);
 
-  // First click: Light on
+  // Multi-step click flow
   actionBtn.onclick = () => {
+    // Stage 1: Light on -> Play Music
+    const instruction = document.getElementById('click-instruction');
+    if (instruction) instruction.remove();
+    
+    actionBtn.onmouseenter = null; 
+    actionBtn.onmouseleave = null;
+    actionBtn.style.transition = 'none';
+
     firstclick();
     actionBtn.style.background = "linear-gradient(120deg,seagreen,skyblue)";
     actionBtn.innerText = "Play Music";
 
-    // Second click: Play Music
     actionBtn.onclick = () => {
+      // Stage 2: Play Music -> Decorate
       playMusic();
       actionBtn.innerText = "Decorate 🎉";
 
-      // Third click: Decoration
       actionBtn.onclick = () => {
+        // Stage 3: Decorate -> Cut Cake
         decoratePage();
         actionBtn.innerText = "Let's cut the cake 🎂";
 
-        // Fourth click: Show cake
         actionBtn.onclick = () => {
+          // Stage 4: Cut Cake -> Message
           showCake();
           actionBtn.innerText = "Well I have a message for you 💌";
 
-          // Fifth click: Show message note
           actionBtn.onclick = () => {
+            // Stage 5: Message -> Final Note
             showMessageNote();
             actionBtn.disabled = true;
           };
@@ -214,6 +276,28 @@ function activateDarkMode() {
   };
 
   document.body.appendChild(actionBtn);
+  showClickInstruction(actionBtn); 
+}
+
+// NEW FUNCTION: Show clear instruction text near the button
+function showClickInstruction(actionBtn) {
+  const instruction = document.createElement("div");
+  instruction.id = "click-instruction";
+  instruction.innerText = "☝️ Click Here to Begin!";
+  instruction.style.position = "fixed";
+  
+  // *** FIX APPLIED: Moved the instruction down to be below the button ***
+  instruction.style.top = "22%"; 
+  
+  instruction.style.left = "50%";
+  instruction.style.transform = "translate(-50%, -50%)"; 
+  instruction.style.color = "yellow"; 
+  instruction.style.fontSize = "1.5rem";
+  instruction.style.fontWeight = "bold";
+  instruction.style.textShadow = "0 0 5px black";
+  instruction.style.animation = "float-bounce 1s infinite alternate";
+
+  document.body.appendChild(instruction);
 }
 
 // ====================== UTILITIES ======================
@@ -285,7 +369,7 @@ function decoratePage() {
   }
 
   const style = document.createElement("style");
-  style.innerHTML = `
+  style.innerHTML += `
     @keyframes floatUp { from { transform: translateY(0); } to { transform: translateY(-110vh); } }
     @keyframes fallDown { from { transform: translateY(0); } to { transform: translateY(110vh); } }
   `;
@@ -329,16 +413,16 @@ function showMessageNote() {
   document.body.appendChild(note);
 
   note.onclick = () => {
-    // Clear all elements
     document.body.innerHTML = "";
-    // Set black background
     document.body.style.background = "black";
-    // Stop firecracker sound
+    if (audio) {
+        audio.pause();
+        audio.currentTime = 0;
+    }
     if (firecrackerAudio) {
       firecrackerAudio.pause();
       firecrackerAudio.currentTime = 0;
     }
-    // Stop interval
     clearInterval(firecrackerInterval);
   };
 }
