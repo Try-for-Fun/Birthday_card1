@@ -4,12 +4,14 @@ const line = document.querySelector("#line");
 const textdiv = document.querySelector(".textdiv");
 
 const firsttext = "Happy birthday Rima ";
-const secondtext = "Lots of loves and wishes from Debmalya";
+const secondtext = "Lots of loves and wishes from Vondu";
 const thirdtext = "Do you want to see what I made?";
 
 let count = 1;
 let textchange;
 let audio;
+let firecrackerAudio; // 🔥 Firecracker music
+let firecrackerInterval; // interval tracker
 
 // ====================== HEARTS ======================
 function createHeart() {
@@ -23,7 +25,7 @@ function createHeart() {
 }
 
 function startHearts() {
-  setInterval(createHeart, 50);
+  setInterval(createHeart, 300);
 }
 
 // ====================== TEXT SEQUENCE ======================
@@ -116,11 +118,11 @@ function createNoButton(container) {
 // ====================== YES FLOW ======================
 function startYesFlow() {
   const overlay = createOverlay();
-  const popup = createPopup("1");
+  const popup = createPopup("3");
   overlay.appendChild(popup);
   document.body.appendChild(overlay);
 
-  let countdown = 1;
+  let countdown = 3;
   const interval = setInterval(() => {
     countdown--;
     popup.innerText = countdown;
@@ -166,7 +168,7 @@ function activateDarkMode() {
   const actionBtn = document.createElement("button");
   actionBtn.style.background = "black";
   actionBtn.style.height = "50px";
-  actionBtn.style.width = "200px";
+  actionBtn.style.width = "250px";
   actionBtn.style.position = "fixed";
   actionBtn.style.top = "10%";
   actionBtn.style.left = "50%";
@@ -177,14 +179,12 @@ function activateDarkMode() {
   actionBtn.style.fontSize = "20px";
   actionBtn.style.color = "white";
   actionBtn.style.fontWeight = "800";
-  setInterval(skyFirecracker, 50);
+
+  firecrackerInterval = setInterval(skyFirecracker, 50);
+
   // First click: Light on
   actionBtn.onclick = () => {
     firstclick();
-    // heartsContainer.style.display = "block"; // show pandas again
-    
-
-    actionBtn.style.border = "none";
     actionBtn.style.background = "linear-gradient(120deg,seagreen,skyblue)";
     actionBtn.innerText = "Play Music";
 
@@ -196,7 +196,19 @@ function activateDarkMode() {
       // Third click: Decoration
       actionBtn.onclick = () => {
         decoratePage();
-        actionBtn.disabled = true;
+        actionBtn.innerText = "Let's cut the cake 🎂";
+
+        // Fourth click: Show cake
+        actionBtn.onclick = () => {
+          showCake();
+          actionBtn.innerText = "Well I have a message for you 💌";
+
+          // Fifth click: Show message note
+          actionBtn.onclick = () => {
+            showMessageNote();
+            actionBtn.disabled = true;
+          };
+        };
       };
     };
   };
@@ -247,7 +259,7 @@ function playMusic() {
 // ====================== DECORATIONS ======================
 function decoratePage() {
   // Balloons
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < 70; i++) {
     const balloon = document.createElement("div");
     balloon.innerText = "🎈";
     balloon.style.position = "fixed";
@@ -260,7 +272,7 @@ function decoratePage() {
   }
 
   // Confetti
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < 50; i++) {
     const confetti = document.createElement("div");
     confetti.innerText = "✨";
     confetti.style.position = "fixed";
@@ -272,7 +284,6 @@ function decoratePage() {
     setTimeout(() => confetti.remove(), 10000);
   }
 
-  // Animation styles
   const style = document.createElement("style");
   style.innerHTML = `
     @keyframes floatUp { from { transform: translateY(0); } to { transform: translateY(-110vh); } }
@@ -281,9 +292,58 @@ function decoratePage() {
   document.head.appendChild(style);
 }
 
-// ====================== SKY FIRECRACKERS (READY TO CALL) ======================
-// Launch firecracker from bottom
-// Launch firecracker from bottom
+// ====================== CAKE ======================
+function showCake() {
+  const cake = document.createElement("img");
+  cake.src = "photo.png"; // replace with your cake image
+  cake.alt = "Birthday Cake";
+  cake.style.position = "fixed";
+  cake.style.top = "50%";
+  cake.style.left = "50%";
+  cake.style.transform = "translate(-50%, -50%)";
+  cake.style.width = "20vw";
+  cake.style.borderRadius="10%";
+  cake.style.zIndex = "10000";
+  document.body.appendChild(cake);
+}
+
+// ====================== MESSAGE NOTE ======================
+function showMessageNote() {
+  const note = document.createElement("div");
+  note.innerText = "Thank you for being a part in my life ❤️ (click me)";
+  note.style.position = "fixed";
+  note.style.top = "50%";
+  note.style.left = "50%";
+  note.style.transform = "translate(-50%, -50%)";
+  note.style.background = "white";
+  note.style.color = "black";
+  note.style.padding = "30px 50px";
+  note.style.fontSize = "2rem";
+  note.style.fontWeight = "bold";
+  note.style.textAlign = "center";
+  note.style.borderRadius = "15px";
+  note.style.boxShadow = "0px 0px 20px rgba(255,255,255,0.7)";
+  note.style.zIndex = "10001";
+  note.style.cursor = "pointer";
+
+  document.body.appendChild(note);
+
+  note.onclick = () => {
+    // Clear all elements
+    document.body.innerHTML = "";
+    // Set black background
+    document.body.style.background = "black";
+    // Stop firecracker sound
+    if (firecrackerAudio) {
+      firecrackerAudio.pause();
+      firecrackerAudio.currentTime = 0;
+    }
+    // Stop interval
+    clearInterval(firecrackerInterval);
+  };
+}
+
+// ====================== SKY FIRECRACKERS ======================
 function skyFirecracker() {
   const rocket = document.createElement("div");
   rocket.style.position = "fixed";
@@ -293,13 +353,10 @@ function skyFirecracker() {
   rocket.style.height = "12px";
   rocket.style.borderRadius = "3px";
   rocket.style.zIndex = "999";
-
-  // Assign a random color for this rocket
   rocket.style.backgroundColor = getRandomBrightColor();
-
   document.body.appendChild(rocket);
 
-  const explodeHeight = 40 + Math.random() * 30; // in vh
+  const explodeHeight = 40 + Math.random() * 30;
   const launchDuration = 800 + Math.random() * 40;
 
   rocket.animate(
@@ -313,11 +370,15 @@ function skyFirecracker() {
   }, launchDuration);
 }
 
-// Create explosion with particles of different colors
 function createExplosion(xPercent, yVh) {
-  const numberOfParticles = 25;
+  if (!firecrackerAudio) {
+    firecrackerAudio = new Audio("sound.mp3"); // firecracker sound
+    firecrackerAudio.loop = true;
+    firecrackerAudio.volume = 0.5;
+    firecrackerAudio.play().catch(err => console.error("Firecracker failed:", err));
+  }
 
-  for (let i = 0; i < numberOfParticles; i++) {
+  for (let i = 0; i < 25; i++) {
     const particle = document.createElement("div");
     particle.style.position = "fixed";
     particle.style.left = xPercent + "vw";
@@ -335,10 +396,7 @@ function createExplosion(xPercent, yVh) {
     const dy = Math.sin(angle) * distance;
 
     particle.animate(
-      [
-        { transform: "translate(0,0)", opacity: 1 },
-        { transform: `translate(${dx}px, ${-dy}px)`, opacity: 0 }
-      ],
+      [{ transform: "translate(0,0)", opacity: 1 }, { transform: `translate(${dx}px, ${-dy}px)`, opacity: 0 }],
       { duration: 1000 + Math.random() * 500, easing: "ease-out", fill: "forwards" }
     );
 
@@ -346,12 +404,11 @@ function createExplosion(xPercent, yVh) {
   }
 }
 
-// Helper: generate bright random colors
+// Helper
 function getRandomBrightColor() {
   const colors = ["#ff3b3b","#ffde3b","#3bff6f","#3bb1ff","#d23bff","#ff6fd2","#ff8c00","#00ffe5"];
   return colors[Math.floor(Math.random() * colors.length)];
 }
-
 
 // ====================== INIT ======================
 startHearts();
