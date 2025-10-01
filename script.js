@@ -3,25 +3,18 @@ const heartsContainer = document.getElementById("hearts");
 const line = document.querySelector("#line");
 const textdiv = document.querySelector(".textdiv");
 
-const firsttext = "Happy birthday Babai";
+const firsttext = "Happy birthday Babai ";
 const secondtext = "Lots of loves and wishes from Vondu";
 const thirdtext = "Do you want to see what I made?";
 
-
-let lastnote="Happy Birthday Tabli ❤
-  You are the most special person in my life. 
-  I feel so lucky to have you. 
-  Your smile lights up my world. 
-  On this special day, I wish you endless happiness, good health, and that you always stay by my side. 
-  I promise to love you, respect you, and take care of you every day. 
-  You are my Queen and the greatest gift of my life. 
-  Happy Birthday, my love.";
+let lastnote = `Happy Birthday Tabli ❤
+You are the most special person in my life. I feel so lucky to have you. Your smile lights up my world. On this special day, I wish you endless happiness, good health, and that you always stay by my side. I promise to love you, respect you, and take care of you every day. You are my Queen and the greatest gift of my life. Happy Birthday, my love.`;
 
 let count = 1;
 let textchange;
 let audio;
-let firecrackerAudio; // 🔥 Firecracker music
-let firecrackerInterval; // interval tracker
+let firecrackerAudio; 
+let firecrackerInterval; 
 
 // ====================== HEARTS ======================
 function createHeart() {
@@ -81,7 +74,6 @@ function createYesButton() {
   btn.style.top = "0";
   btn.style.backgroundColor = "blue";
   btn.style.color = "white";
-
   btn.onclick = () => startYesFlow();
   return btn;
 }
@@ -157,7 +149,7 @@ function showSurprisePopup() {
 
   okButton.onclick = () => {
     document.body.removeChild(okOverlay);
-    heartsContainer.style.display = "none"; // hide pandas
+    heartsContainer.style.display = "none"; 
     activateDarkMode();
   };
 
@@ -178,30 +170,25 @@ function activateDarkMode() {
   const actionBtn = document.createElement("button");
   actionBtn.style.background = "black";
   actionBtn.style.height = "50px";
-  
-  // *** RESPONSIVE WIDTH SETUP ***
   actionBtn.style.padding = "0 20px"; 
-  
   actionBtn.style.position = "fixed";
   actionBtn.style.top = "10%";
-  
-  // *** CENTER BUTTON HORIZONTALLY ***
   actionBtn.style.left = "50%"; 
   actionBtn.style.transform = "translateX(-50%)"; 
-  
   actionBtn.style.borderRadius = "10px";
   actionBtn.innerText = "Light on";
-  
-  // --- ENHANCED STYLING ---
+
   actionBtn.style.border = "3px solid cyan"; 
   actionBtn.style.fontSize = "22px"; 
   actionBtn.style.color = "white";
   actionBtn.style.fontWeight = "800";
   actionBtn.style.cursor = "pointer";
   actionBtn.style.textShadow = "0 0 8px #00FFFF, 0 0 15px #00FFFF"; 
-  
-  // --- PULSE AND WIGGLE ANIMATIONS ---
   actionBtn.style.animation = "pulse 1.5s ease-in-out infinite, wiggle 0.5s 3"; 
+
+  // ✅ FIX: remove annoying blue focus/hover box
+  actionBtn.style.outline = "none";
+  actionBtn.onfocus = () => actionBtn.blur();
 
   const style = document.createElement("style");
   style.innerHTML = `
@@ -210,22 +197,20 @@ function activateDarkMode() {
       50% { box-shadow: 0 0 30px rgba(0, 255, 255, 1), 0 0 0 15px rgba(0, 255, 255, 0); transform: translateX(-50%) scale(1.05); }
       100% { box-shadow: 0 0 10px rgba(0, 255, 255, 0.7), 0 0 0 0 rgba(0, 255, 255, 0.4); transform: translateX(-50%) scale(1); }
     }
-    
     @keyframes float-bounce {
       from { transform: translate(-50%, -50%) translateY(0); }
       to { transform: translate(-50%, -50%) translateY(-10px); }
     }
-
-    /* Updated wiggle to use translateX for horizontal centering */
     @keyframes wiggle {
       0%, 100% { transform: translateX(-50%) rotate(0deg); }
       25% { transform: translateX(-53%) rotate(-3deg); }
       75% { transform: translateX(-47%) rotate(3deg); }
     }
+    button:focus { outline: none !important; }
   `;
   document.head.appendChild(style);
 
-  // --- INTERACTIVE HOVER GLOW EFFECT ---
+  // Hover glow
   actionBtn.addEventListener("mouseenter", () => {
     actionBtn.style.transition = "background-color 0.2s, box-shadow 0.2s, color 0.2s";
     actionBtn.style.background = "linear-gradient(135deg, #00FFFF, #00BFFF)"; 
@@ -241,17 +226,13 @@ function activateDarkMode() {
     actionBtn.style.textShadow = "0 0 8px #00FFFF, 0 0 15px #00FFFF";
   });
 
-  // Add tooltip
   actionBtn.title = "Click me to turn on the light!";
-
   firecrackerInterval = setInterval(skyFirecracker, 50);
 
-  // Multi-step click flow
   actionBtn.onclick = () => {
-    // Stage 1: Light on -> Play Music
     const instruction = document.getElementById('click-instruction');
     if (instruction) instruction.remove();
-    
+
     actionBtn.onmouseenter = null; 
     actionBtn.onmouseleave = null;
     actionBtn.style.transition = 'none';
@@ -261,22 +242,18 @@ function activateDarkMode() {
     actionBtn.innerText = "Play Music";
 
     actionBtn.onclick = () => {
-      // Stage 2: Play Music -> Decorate
       playMusic();
       actionBtn.innerText = "Decorate 🎉";
 
       actionBtn.onclick = () => {
-        // Stage 3: Decorate -> Cut Cake
         decoratePage();
         actionBtn.innerText = "Let's cut the cake 🎂";
 
         actionBtn.onclick = () => {
-          // Stage 4: Cut Cake -> Message
           showCake();
           actionBtn.innerText = "Well I have a message for you 💌";
 
           actionBtn.onclick = () => {
-            // Stage 5: Message -> Final Note
             showMessageNote();
             actionBtn.disabled = true;
           };
@@ -287,27 +264,6 @@ function activateDarkMode() {
 
   document.body.appendChild(actionBtn);
   showClickInstruction(actionBtn); 
-}
-
-// NEW FUNCTION: Show clear instruction text near the button
-function showClickInstruction(actionBtn) {
-  const instruction = document.createElement("div");
-  instruction.id = "click-instruction";
-  instruction.innerText = "☝️ Click Here to Begin!";
-  instruction.style.position = "fixed";
-  
-  // *** FIX APPLIED: Moved the instruction down to be below the button ***
-  instruction.style.top = "22%"; 
-  
-  instruction.style.left = "50%";
-  instruction.style.transform = "translate(-50%, -50%)"; 
-  instruction.style.color = "yellow"; 
-  instruction.style.fontSize = "1.5rem";
-  instruction.style.fontWeight = "bold";
-  instruction.style.textShadow = "0 0 5px black";
-  instruction.style.animation = "float-bounce 1s infinite alternate";
-
-  document.body.appendChild(instruction);
 }
 
 // ====================== UTILITIES ======================
@@ -344,15 +300,12 @@ function firstclick() {
 
 // ====================== MUSIC ======================
 function playMusic() {
-  audio = new Audio("music.mp3"); // replace with your music file
-  audio.play()
-    .then(() => console.log("Music is playing 🎵"))
-    .catch(err => console.error("Music play failed:", err));
+  audio = new Audio("music.mp3");
+  audio.play().catch(err => console.error("Music play failed:", err));
 }
 
 // ====================== DECORATIONS ======================
 function decoratePage() {
-  // Balloons
   for (let i = 0; i < 70; i++) {
     const balloon = document.createElement("div");
     balloon.innerText = "🎈";
@@ -364,8 +317,6 @@ function decoratePage() {
     document.body.appendChild(balloon);
     setTimeout(() => balloon.remove(), 10000);
   }
-
-  // Confetti
   for (let i = 0; i < 50; i++) {
     const confetti = document.createElement("div");
     confetti.innerText = "✨";
@@ -377,7 +328,6 @@ function decoratePage() {
     document.body.appendChild(confetti);
     setTimeout(() => confetti.remove(), 10000);
   }
-
   const style = document.createElement("style");
   style.innerHTML += `
     @keyframes floatUp { from { transform: translateY(0); } to { transform: translateY(-110vh); } }
@@ -389,7 +339,7 @@ function decoratePage() {
 // ====================== CAKE ======================
 function showCake() {
   const cake = document.createElement("img");
-  cake.src = "photo.png"; // replace with your cake image
+  cake.src = "photo.png"; 
   cake.alt = "Birthday Cake";
   cake.style.position = "fixed";
   cake.style.top = "50%";
@@ -404,7 +354,8 @@ function showCake() {
 // ====================== MESSAGE NOTE ======================
 function showMessageNote() {
   const note = document.createElement("div");
-  note.innerText = lastnote;
+  note.innerText = `Happy Birthday Tabli ❤
+You are the most special person in my life. I feel so lucky to have you. Your smile lights up my world. On this special day, I wish you endless happiness, good health, and that you always stay by my side. I promise to love you, respect you, and take care of you every day. You are my Queen and the greatest gift of my life. Happy Birthday, my love. (click me)`;
   note.style.position = "fixed";
   note.style.top = "50%";
   note.style.left = "50%";
@@ -425,14 +376,8 @@ function showMessageNote() {
   note.onclick = () => {
     document.body.innerHTML = "";
     document.body.style.background = "black";
-    if (audio) {
-        audio.pause();
-        audio.currentTime = 0;
-    }
-    if (firecrackerAudio) {
-      firecrackerAudio.pause();
-      firecrackerAudio.currentTime = 0;
-    }
+    if (audio) { audio.pause(); audio.currentTime = 0; }
+    if (firecrackerAudio) { firecrackerAudio.pause(); firecrackerAudio.currentTime = 0; }
     clearInterval(firecrackerInterval);
   };
 }
@@ -453,10 +398,8 @@ function skyFirecracker() {
   const explodeHeight = 40 + Math.random() * 30;
   const launchDuration = 800 + Math.random() * 40;
 
-  rocket.animate(
-    [{ bottom: "0vh" }, { bottom: explodeHeight + "vh" }],
-    { duration: launchDuration, easing: "ease-out", fill: "forwards" }
-  );
+  rocket.animate([{ bottom: "0vh" }, { bottom: explodeHeight + "vh" }],
+    { duration: launchDuration, easing: "ease-out", fill: "forwards" });
 
   setTimeout(() => {
     createExplosion(parseFloat(rocket.style.left), explodeHeight);
@@ -466,7 +409,7 @@ function skyFirecracker() {
 
 function createExplosion(xPercent, yVh) {
   if (!firecrackerAudio) {
-    firecrackerAudio = new Audio("sound.mp3"); // firecracker sound
+    firecrackerAudio = new Audio("sound.mp3"); 
     firecrackerAudio.loop = true;
     firecrackerAudio.volume = 0.5;
     firecrackerAudio.play().catch(err => console.error("Firecracker failed:", err));
@@ -498,7 +441,6 @@ function createExplosion(xPercent, yVh) {
   }
 }
 
-// Helper
 function getRandomBrightColor() {
   const colors = ["#ff3b3b","#ffde3b","#3bff6f","#3bb1ff","#d23bff","#ff6fd2","#ff8c00","#00ffe5"];
   return colors[Math.floor(Math.random() * colors.length)];
@@ -507,5 +449,3 @@ function getRandomBrightColor() {
 // ====================== INIT ======================
 startHearts();
 startTextChange();
-
-
